@@ -8,23 +8,22 @@
     :root {
       --bg: #f0f4f8;
       --text: #333;
-      --section: #f9f9f9;
-      --hover: #edf3f9;
+      --section: #ffffff;
+      --hover: #e6f0ff;
       --accent: #002855;
-      --info-bg: #f1f6fb;
+      --info-bg: #e0ecff;
+      --summary-bg: #d0e0ff;
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
         --bg: #121212;
-        --text: #eee;
+        --text: #e0e0e0;
         --section: #1e1e1e;
         --hover: #2a2a2a;
         --accent: #80bfff;
         --info-bg: #2b3b52;
-      }
-      main {
-        background: #1a1a1a;
+        --summary-bg: #1a2b40;
       }
     }
 
@@ -51,7 +50,7 @@
       max-width: 800px;
       margin: 2em auto;
       padding: 2em;
-      background: white;
+      background: var(--section);
       border-radius: 10px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
@@ -64,9 +63,10 @@
     summary {
       padding: 1em;
       font-weight: bold;
-      background: #dee7f1;
+      background: var(--summary-bg);
       cursor: pointer;
       border-radius: 8px 8px 0 0;
+      color: var(--text);
     }
     .checklist-item {
       display: flex;
@@ -88,6 +88,7 @@
       border-left: 4px solid var(--accent);
       font-size: 0.95em;
       border-radius: 5px;
+      color: var(--text);
     }
     input[type="checkbox"]:checked + label {
       text-decoration: line-through;
@@ -144,7 +145,6 @@
       checklist.innerHTML = checklistData.map(section => {
         const completed = section.tasks.filter(task => localStorage.getItem(task.text) === 'true').length;
         const total = section.tasks.length;
-        const percent = Math.round((completed / total) * 100);
         return `
         <details class="day-section" open>
           <summary>${section.date}</summary>
