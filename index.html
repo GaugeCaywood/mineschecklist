@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gauge's Mines Checklist</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2em;
+      background: #f5f5f5;
+    }
+    .checklist-item {
+      margin: 0.5em 0;
+    }
+    input[type="checkbox"] {
+      transform: scale(1.5);
+      margin-right: 1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏔️ Mines College Checklist</h1>
+  <ul id="checklist"></ul>
+
+  <script>
+    const items = [
+      "Activate my.mines.edu account",
+      "Complete the FAFSA (priority deadline: March 1, 2025)",
+      "Submit the General Scholarship Application (priority deadline: March 1, 2025)",
+      "Grant proxy access in Trailhead",
+      "Submit Enrollment Decision Form and $200 deposit (deadline: May 1, 2025)",
+      "Sign up for Financial Aid newsletter",
+      "Register for campus visit or student event",
+      "Check the academic calendar",
+      "Collect I-9 documentation for student employment",
+      "Apply for Harvey Scholarship (deadline: March 17, 2025)",
+      "Apply for Grewcock Presidential Scholarship (deadline: March 17, 2025)",
+      "Apply for Bliss Scholarship (deadline: March 31, 2025)",
+      "Apply for Starzer Scholarship (deadline: March 31, 2025)",
+      "Apply for First-Year Honors (rolling, final deadline: July 31, 2025)",
+      "Register with Disability Support Services (if applicable)",
+      "Submit the Student Financial Responsibility Agreement",
+      "Submit external scholarships via Outside Resources Form",
+      "Submit Tuition Classification Form (due June 1, 2025)",
+      "Apply for Housing (Phase 1 due May 19, Phase 2 due June 10)",
+      "Room Selection and Contract Signing (deadline: June 30, 2025)",
+      "Submit Immunization Records and Health Forms (deadline: June 15, 2025)",
+      "Submit Final High School Transcript (deadline: July 1, 2025)",
+      "Submit Official College Transcripts (deadline: July 1, 2025)",
+      "Submit First-Year Registration Survey (deadline: July 1, 2025)",
+      "Submit BlasterCard Photo (deadline: August 8, 2025)",
+      "Check Trailhead for Outstanding Financial Aid Requirements (by July 31, 2025)",
+      "Create Authorized User Accounts (July)",
+      "Submit Sponsored Student Agreement Form (July)",
+      "Sign up for Helluva Welcome and Peer Discussions",
+      "Review Pre-Arrival Checklist and RSVP for Orientation",
+      "Apply for Federal or Private Loans (optional, start in June)",
+      "Enroll in Direct Deposit Refunds (by July)",
+      "Enroll in Fall Semester Payment Plan (opens April 13, 2025)",
+      "Apply for College Opportunity Fund (if CO resident)",
+      "Waive or enroll in Student Health Insurance (July 15 - Census Day)"
+    ];
+
+    const checklist = document.getElementById("checklist");
+
+    items.forEach((item, index) => {
+      const li = document.createElement("li");
+      li.className = "checklist-item";
+      li.innerHTML = `<input type="checkbox" id="item${index}" />
+                      <label for="item${index}">${item}</label>`;
+      checklist.appendChild(li);
+
+      const saved = localStorage.getItem(`item${index}`);
+      if (saved === "true") document.getElementById(`item${index}`).checked = true;
+
+      document.getElementById(`item${index}`).addEventListener("change", (e) => {
+        localStorage.setItem(`item${index}`, e.target.checked);
+      });
+    });
+  </script>
+</body>
+</html>
