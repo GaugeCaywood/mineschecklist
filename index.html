@@ -77,94 +77,10 @@
   <main id="checklist"></main>
 
   <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const items = [
-    { date: "2025-03-01", text: "Complete the FAFSA" },
-    { date: "2025-03-01", text: "Submit the General Scholarship Application" },
-    { date: "2025-03-17", text: "Apply for Harvey Scholarship" },
-    { date: "2025-03-17", text: "Apply for Grewcock Presidential Scholarship" },
-    { date: "2025-03-31", text: "Apply for Bliss Scholarship" },
-    { date: "2025-03-31", text: "Apply for Starzer Scholarship" },
-    { date: "2025-04-13", text: "Enroll in Fall Semester Payment Plan" },
-    { date: "2025-05-01", text: "Submit Enrollment Decision Form and $200 deposit" },
-    { date: "2025-05-19", text: "Apply for Housing - Phase 1" },
-    { date: "2025-06-01", text: "Submit Tuition Classification Form" },
-    { date: "2025-06-10", text: "Apply for Housing - Phase 2" },
-    { date: "2025-06-15", text: "Submit Immunization Records and Health Forms" },
-    { date: "2025-06-30", text: "Room Selection and Contract Signing" },
-    { date: "2025-07-01", text: "Submit Final High School Transcript" },
-    { date: "2025-07-01", text: "Submit Official College Transcripts" },
-    { date: "2025-07-01", text: "Submit First-Year Registration Survey" },
-    { date: "2025-07-15", text: "Waive or enroll in Student Health Insurance" },
-    { date: "2025-07-31", text: "Check Trailhead for Outstanding Financial Aid Requirements" },
-    { date: "2025-07-31", text: "Apply for First-Year Honors" },
-    { date: "2025-08-08", text: "Submit BlasterCard Photo" },
-    {
-      date: "optional",
-      text: "Apply for Federal or Private Loans",
-      info: `<strong>If you are planning to use federal student loans, federal Parent PLUS loans, or a private education loan, June is the time to begin this process.</strong> The Financial Aid Office will begin certifying PLUS and private loans in July. Funds will be paid toward your bill in August.<br><br><strong>Helpful Resources:</strong><ul><li><a href='https://studentaid.gov/understand-aid/types/loans' target='_blank'>Federal Student Loans</a></li><li><a href='https://www.salliemae.com/student-loans/' target='_blank'>Sallie Mae</a></li><li><a href='https://www.discover.com/student-loans/' target='_blank'>Discover Student Loans</a></li><li><a href='https://www.citizensbank.com/student-loans' target='_blank'>Citizens Bank</a></li></ul>`
-    },
-    { date: "optional", text: "Activate my.mines.edu account" },
-    { date: "optional", text: "Grant proxy access in Trailhead" },
-    { date: "optional", text: "Sign up for Financial Aid newsletter" },
-    { date: "optional", text: "Register for campus visit or student event" },
-    { date: "optional", text: "Check the academic calendar" },
-    { date: "optional", text: "Collect I-9 documentation for student employment" },
-    { date: "optional", text: "Register with Disability Support Services (if applicable)" },
-    { date: "optional", text: "Submit the Student Financial Responsibility Agreement" },
-    { date: "optional", text: "Submit external scholarships via Outside Resources Form" },
-    { date: "optional", text: "Create Authorized User Accounts" },
-    { date: "optional", text: "Submit Sponsored Student Agreement Form" },
-    { date: "optional", text: "Sign up for Helluva Welcome and Peer Discussions" },
-    { date: "optional", text: "Review Pre-Arrival Checklist and RSVP for Orientation" },
-    { date: "optional", text: "Enroll in Direct Deposit Refunds" },
-  ];
-
-  const checklistContainer = document.getElementById("checklist");
-  const groupedItems = {};
-  items.forEach((item, index) => {
-    const group = item.date === "optional" ? "Optional Tasks" : item.date;
-    if (!groupedItems[group]) groupedItems[group] = [];
-    groupedItems[group].push({ ...item, index });
-  });
-
-  const sortedDates = Object.keys(groupedItems).sort((a, b) => {
-    if (a === "Optional Tasks") return 1;
-    if (b === "Optional Tasks") return -1;
-    return new Date(a) - new Date(b);
-  });
-
-  sortedDates.forEach((date) => {
-    const section = document.createElement("details");
-    section.open = true;
-    const summary = document.createElement("summary");
-    summary.textContent = date === "Optional Tasks" ? "Optional Tasks" : `Due ${new Date(date).toDateString()}`;
-    section.appendChild(summary);
-
-    groupedItems[date].forEach(({ text, index, info }) => {
-      const item = document.createElement("div");
-      item.className = "checklist-item";
-      item.innerHTML = `<label for="item${index}"><input type="checkbox" id="item${index}" /> ${text}</label>`;
-      section.appendChild(item);
-
-      if (info) {
-        const subDetails = document.createElement("div");
-        subDetails.className = "subdetails";
-        subDetails.innerHTML = info;
-        section.appendChild(subDetails);
-      }
-
-      const saved = localStorage.getItem(`item${index}`);
-      if (saved === "true") document.getElementById(`item${index}`).checked = true;
-
-      document.getElementById(`item${index}`).addEventListener("change", (e) => {
-        localStorage.setItem(`item${index}`, e.target.checked);
-      });
-    });
-
-    checklistContainer.appendChild(section);
-  });
+window.addEventListener("load", () => {
+  const items = [...document.querySelectorAll(".checklist-item")];
+  if (!items.length) console.warn("No checklist items found.");
 });
-</script>
+  </script>
 </body>
 </html>
