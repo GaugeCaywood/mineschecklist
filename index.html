@@ -30,8 +30,8 @@
       font-size: 2em;
       margin-bottom: 1em;
     }
-    details {
-      margin-bottom: 1em;
+    .day-section {
+      margin-bottom: 2em;
       border: 1px solid #ccc;
       border-radius: 8px;
       background: #f9f9f9;
@@ -45,28 +45,22 @@
     }
     .checklist-item {
       display: flex;
-      flex-direction: column;
-      background: #eaf0f6;
+      align-items: flex-start;
+      gap: 0.5em;
+      padding: 0.75em 1em;
       border-top: 1px solid #d3dce6;
-      padding: 0.75em;
+      background: #ffffff;
     }
     .checklist-item:hover {
-      background: #dce6f0;
-    }
-    input[type="checkbox"] {
-      transform: scale(1.3);
-      margin-right: 0.5em;
-    }
-    label {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
+      background: #edf3f9;
     }
     .subdetails {
-      background: #f1f6fb;
+      margin-left: 2em;
       margin-top: 0.5em;
+      background: #f1f6fb;
       padding: 0.5em 1em;
       border-left: 4px solid #002855;
+      font-size: 0.95em;
     }
   </style>
 </head>
@@ -77,10 +71,41 @@
   <main id="checklist"></main>
 
   <script>
-window.addEventListener("load", () => {
-  const items = [...document.querySelectorAll(".checklist-item")];
-  if (!items.length) console.warn("No checklist items found.");
-});
+    document.addEventListener("DOMContentLoaded", () => {
+      const checklistData = [
+        {
+          date: "June",
+          tasks: [
+            {
+              text: "Apply for Federal or Private Loans",
+              info: `<strong>If you are planning to use federal student loans, federal Parent PLUS loans, or a private education loan, June is the time to begin this process.</strong> The Financial Aid Office will begin certifying PLUS and private loans in July. Funds will be paid toward your bill in August.<br><br><strong>Helpful Resources:</strong><ul><li><a href='https://studentaid.gov/understand-aid/types/loans' target='_blank'>Federal Student Loans</a></li><li><a href='https://www.salliemae.com/student-loans/' target='_blank'>Sallie Mae</a></li><li><a href='https://www.discover.com/student-loans/' target='_blank'>Discover Student Loans</a></li><li><a href='https://www.citizensbank.com/student-loans' target='_blank'>Citizens Bank</a></li></ul>`
+            },
+            {
+              text: "Submit Helluva Welcome Confirmation Form",
+              info: "Required for orientation week including Oredigger Camp. Due June 20."
+            },
+            {
+              text: "Submit final college transcripts",
+              info: "Submit by June 18 to ensure they arrive in time for schedule building."
+            }
+          ]
+        }
+      ];
+
+      const checklist = document.getElementById("checklist");
+      checklist.innerHTML = checklistData.map(section => `
+        <details class="day-section" open>
+          <summary>${section.date}</summary>
+          ${section.tasks.map(task => `
+            <div class="checklist-item">
+              <input type="checkbox" id="${task.text}">
+              <label for="${task.text}">${task.text}</label>
+              ${task.info ? `<div class="subdetails">${task.info}</div>` : ""}
+            </div>
+          `).join("")}
+        </details>
+      `).join("");
+    });
   </script>
 </body>
 </html>
