@@ -3,20 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <title>Gauge's Mines Checklist</title>
+  <link rel="icon" href="favicon.png" type="image/png">
   <style>
+    :root {
+      --bg: #f0f4f8;
+      --text: #333;
+      --section: #f9f9f9;
+      --hover: #edf3f9;
+      --accent: #002855;
+      --info-bg: #f1f6fb;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121212;
+        --text: #eee;
+        --section: #1e1e1e;
+        --hover: #2a2a2a;
+        --accent: #80bfff;
+        --info-bg: #2b3b52;
+      }
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
-      background: #f0f4f8;
-      color: #333;
+      background: var(--bg);
+      color: var(--text);
     }
     header {
-      background-color: #002855;
+      background-color: var(--accent);
       color: white;
       padding: 1.5em 1em;
       text-align: center;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    header img {
+      height: 40px;
+      vertical-align: middle;
+      margin-right: 10px;
     }
     main {
       max-width: 800px;
@@ -26,15 +52,11 @@
       border-radius: 10px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
-    h1 {
-      font-size: 2em;
-      margin-bottom: 1em;
-    }
     .day-section {
       margin-bottom: 2em;
       border: 1px solid #ccc;
       border-radius: 8px;
-      background: #f9f9f9;
+      background: var(--section);
     }
     summary {
       padding: 1em;
@@ -49,24 +71,36 @@
       gap: 0.5em;
       padding: 0.75em 1em;
       border-top: 1px solid #d3dce6;
-      background: #ffffff;
+      background: var(--bg);
+      transition: background 0.2s ease;
     }
     .checklist-item:hover {
-      background: #edf3f9;
+      background: var(--hover);
     }
     .subdetails {
       margin-left: 2em;
       margin-top: 0.5em;
-      background: #f1f6fb;
+      background: var(--info-bg);
       padding: 0.5em 1em;
-      border-left: 4px solid #002855;
+      border-left: 4px solid var(--accent);
       font-size: 0.95em;
+      border-radius: 5px;
+    }
+    input[type="checkbox"]:checked + label {
+      text-decoration: line-through;
+      color: green;
+    }
+    progress {
+      width: 100%;
+      height: 20px;
+      margin: 0.5em 0 1em;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>🏔️ Mines College Checklist</h1>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/9/92/Colorado_School_of_Mines_seal.png" alt="Mines Logo">
+    <span style="font-size: 1.8em; font-weight: bold; vertical-align: middle;">Mines College Checklist</span>
   </header>
   <main id="checklist"></main>
 
@@ -103,18 +137,34 @@
       ];
 
       const checklist = document.getElementById("checklist");
-      checklist.innerHTML = checklistData.map(section => `
+      checklist.innerHTML = checklistData.map(section => {
+        const completed = section.tasks.filter(task => localStorage.getItem(task.text) === 'true').length;
+        const total = section.tasks.length;
+        const percent = Math.round((completed / total) * 100);
+        return `
         <details class="day-section" open>
           <summary>${section.date}</summary>
-          ${section.tasks.map(task => `
-            <div class="checklist-item">
-              <input type="checkbox" id="${task.text}">
-              <label for="${task.text}">${task.text}</label>
-              ${task.info ? `<div class="subdetails">${task.info}</div>` : ""}
-            </div>
-          `).join("")}
+          <progress value="${completed}" max="${total}"></progress>
+          ${section.tasks.map(task => {
+            const checked = localStorage.getItem(task.text) === 'true';
+            return `
+              <div class="checklist-item">
+                <input type="checkbox" id="${task.text}" ${checked ? 'checked' : ''}>
+                <label for="${task.text}">${task.text}</label>
+                ${task.info ? `<div class="subdetails">${task.info}</div>` : ""}
+              </div>
+            `;
+          }).join("")}
         </details>
-      `).join("");
+        `;
+      }).join("");
+
+      document.querySelectorAll('input[type="checkbox"]').forEach(input => {
+        input.addEventListener('change', () => {
+          localStorage.setItem(input.id, input.checked);
+          location.reload();
+        });
+      });
     });
   </script>
 </body>
